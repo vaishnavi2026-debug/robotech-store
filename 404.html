@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Drone Lost | RoboTech Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-404 {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .content-404 { max-width: 500px; }
+
+        .drone-404 {
+            font-size: 6rem;
+            animation: droneLost 4s ease-in-out infinite;
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes droneLost {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -15px) rotate(5deg); }
+            50% { transform: translate(-10px, -25px) rotate(-3deg); }
+            75% { transform: translate(-20px, -10px) rotate(3deg); }
+        }
+
+        .title-404 {
+            font-family: var(--font-display);
+            font-size: 8rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle-404 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .text-404 {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn-404 {
+            display: inline-block;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-404">
+        <div class="content-404">
+            <span class="drone-404">🛸</span>
+            <div class="title-404">404</div>
+            <h1 class="subtitle-404">Drone Lost in Transit</h1>
+            <p class="text-404">Our drone couldn't find the page you're looking for. It might have flown to another dimension.</p>
+            <a href="index.html" class="cta-btn btn-404">Back to Home</a>
+            <a href="index.html#products" class="cta-btn btn-404">Browse Products</a>
+        </div>
+    </div>
+    <script>
+        const t = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+    </script>
+</body>
+</html>

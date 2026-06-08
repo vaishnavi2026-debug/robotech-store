@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking - RoboTech Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .tracking-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-primary);
+        }
+
+        .tracking-container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .tracking-search {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tracking-search h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tracking-search p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .tracking-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.4rem;
+        }
+
+        .tracking-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .tracking-input::placeholder { color: var(--text-muted); }
+
+        .tracking-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .tracking-btn:hover { transform: scale(1.05); }
+
+        /* Results */
+        .tracking-result {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: none;
+        }
+
+        .tracking-result.active { display: block; }
+
+        .tracking-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tracking-order-id {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .tracking-status {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .tracking-status.confirmed { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .tracking-status.processing { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+        .tracking-status.shipped { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+        .tracking-status.delivered { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+
+        /* Timeline */
+        .tracking-timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--border-color);
+        }
+
+        .timeline-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            z-index: 1;
+            transition: var(--transition-normal);
+        }
+
+        .timeline-step.active .timeline-dot {
+            background: var(--accent-gradient);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .timeline-step.completed .timeline-dot {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #4ade80;
+        }
+
+        .timeline-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-info p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .timeline-step:not(.active):not(.completed) .timeline-info h4 {
+            color: var(--text-muted);
+        }
+
+        /* Order Items */
+        .tracking-items {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tracking-items h3 { margin-bottom: 1rem; }
+
+        .tracking-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+        }
+
+        .tracking-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: var(--bg-secondary);
+        }
+
+        .tracking-item-info { flex: 1; }
+        .tracking-item-name { font-weight: 600; font-size: 0.95rem; }
+        .tracking-item-qty { color: var(--text-muted); font-size: 0.85rem; }
+        .tracking-item-price { font-weight: 700; color: var(--accent-secondary); }
+
+        .tracking-error {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .tracking-error.active { display: block; }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover { color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <div class="tracking-page">
+        <div class="tracking-container">
+            <div class="tracking-search">
+                <h1>📦 Track Your Order</h1>
+                <p>Enter your order ID to see the current status</p>
+                <div class="tracking-input-wrapper">
+                    <input type="text" id="trackingInput" class="tracking-input" placeholder="Enter Order ID (e.g., A1B2C3D4)">
+                    <button class="tracking-btn" id="trackBtn">Track</button>
+                </div>
+            </div>
+
+            <div class="tracking-result" id="trackingResult">
+                <div class="tracking-result-header">
+                    <span class="tracking-order-id" id="trackOrderId"></span>
+                    <span class="tracking-status" id="trackStatus"></span>
+                </div>
+
+                <div class="tracking-timeline" id="trackingTimeline">
+                    <div class="timeline-line"></div>
+                </div>
+
+                <div class="tracking-items" id="trackingItems">
+                    <h3>Order Items</h3>
+                </div>
+            </div>
+
+            <div class="tracking-error" id="trackingError">
+                <p>⚠️ Order not found. Please check your Order ID and try again.</p>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Store</a>
+        </div>
+    </div>
+
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        document.getElementById('trackBtn').addEventListener('click', trackOrder);
+        document.getElementById('trackingInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') trackOrder();
+        });
+
+        // Check URL param
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+        if (orderId) {
+            document.getElementById('trackingInput').value = orderId;
+            trackOrder();
+        }
+
+        async function trackOrder() {
+            const input = document.getElementById('trackingInput').value.trim();
+            if (!input) return;
+
+            document.getElementById('trackingResult').classList.remove('active');
+            document.getElementById('trackingError').classList.remove('active');
+
+            try {
+                // Try both full UUID and short ID
+                let res = await fetch(`/api/orders/${input}/tracking`);
+
+                if (!res.ok) {
+                    // Try finding by partial match
+                    const ordersRes = await fetch('/api/orders');
+                    const ordersData = await ordersRes.json();
+                    const match = ordersData.orders.find(o => 
+                        o.id.toUpperCase().startsWith(input.toUpperCase()) ||
+                        o.id.slice(0, 8).toUpperCase() === input.toUpperCase()
+                    );
+
+                    if (match) {
+                        res = await fetch(`/api/orders/${match.id}/tracking`);
+                    } else {
+                        document.getElementById('trackingError').classList.add('active');
+                        return;
+                    }
+                }
+
+                const data = await res.json();
+                if (!data.success) {
+                    document.getElementById('trackingError').classList.add('active');
+                    return;
+                }
+
+                displayTracking(data);
+            } catch {
+                document.getElementById('trackingError').classList.add('active');
+            }
+        }
+
+        function displayTracking(data) {
+            const { order, timeline } = data;
+
+            document.getElementById('trackOrderId').textContent = `Order #${order.id.slice(0, 8).toUpperCase()}`;
+            const statusEl = document.getElementById('trackStatus');
+            statusEl.textContent = order.status;
+            statusEl.className = `tracking-status ${order.status}`;
+
+            // Timeline
+            const timelineEl = document.getElementById('trackingTimeline');
+            const currentIdx = timeline.findIndex(t => t.status === order.status);
+
+            timelineEl.innerHTML = '<div class="timeline-line"></div>' + timeline.map((step, i) => {
+                let cls = '';
+                if (i < currentIdx) cls = 'completed';
+                else if (i === currentIdx) cls = 'active';
+
+                const timeStr = step.time ? new Date(step.time).toLocaleString() : 'Pending';
+
+                return `
+                    <div class="timeline-step ${cls}">
+                        <div class="timeline-dot">${i <= currentIdx ? '✓' : step.icon}</div>
+                        <div class="timeline-info">
+                            <h4>${step.label}</h4>
+                            <p>${i <= currentIdx ? timeStr : 'Waiting...'}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Items
+            const itemsEl = document.getElementById('trackingItems');
+            itemsEl.innerHTML = '<h3>Order Items</h3>' + order.items.map(item => `
+                <div class="tracking-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="tracking-item-info">
+                        <div class="tracking-item-name">${item.name}</div>
+                        <div class="tracking-item-qty">Qty: ${item.quantity}</div>
+                    </div>
+                    <div class="tracking-item-price">$${item.price}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('trackingResult').classList.add('active');
+        }
+    </script>
+</body>
+</html>

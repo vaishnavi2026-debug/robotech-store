@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboTech Store - Premium Robotics & Drones</title>
+    <meta name="description"
+        content="Discover cutting-edge robotics and drones at RoboTech Store. Premium quality autonomous systems, aerial drones, and robotic solutions.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <meta property="og:title" content="RoboTech Store - Premium Robotics & Drones">
+    <meta property="og:description" content="Discover cutting-edge robotics and drones. AI-powered flight systems, professional cinematography drones, and autonomous delivery solutions.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#4b5563">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Promo Banner -->
+    <div class="promo-banner" id="promoBanner">
+        <div class="promo-track">
+            <span>🚀 Free shipping on orders over $999!</span>
+            <span>⚡ Use code DRONE20 for 20% off</span>
+            <span>🛡️ 2-Year warranty on all products</span>
+            <span>🚀 Free shipping on orders over $999!</span>
+            <span>⚡ Use code DRONE20 for 20% off</span>
+            <span>🛡️ 2-Year warranty on all products</span>
+        </div>
+        <button class="promo-close" onclick="document.getElementById('promoBanner').style.display='none'; document.querySelector('.navbar').style.top='0';">×</button>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-icon">🤖</div>
+            <div class="loader-text">RoboTech</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Search Modal -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-modal">
+            <div class="search-header">
+                <div class="search-input-wrapper">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search drones..." autocomplete="off">
+                    <button class="search-close-btn" id="searchClose">ESC</button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <p class="search-hint">Start typing to search products...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h2>Your Cart</h2>
+            <button class="cart-drawer-close" id="cartDrawerClose">&times;</button>
+        </div>
+        <div class="cart-drawer-items" id="cartDrawerItems">
+            <div class="cart-empty">
+                <span class="cart-empty-icon">🛒</span>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-drawer-footer" id="cartDrawerFooter">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="cart-total-amount" id="cartTotalAmount">$0</span>
+            </div>
+            <button class="cta-btn cart-checkout-btn" id="cartCheckoutBtn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Panel -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-panel">
+            <button class="modal-close" id="checkoutClose">&times;</button>
+            <h2>Checkout</h2>
+            <div class="checkout-summary" id="checkoutSummary"></div>
+            <form class="checkout-form" id="checkoutForm">
+                <div class="form-group">
+                    <label for="checkoutName">Full Name</label>
+                    <input type="text" id="checkoutName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutEmail">Email</label>
+                    <input type="email" id="checkoutEmail" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutAddress">Shipping Address</label>
+                    <textarea id="checkoutAddress" placeholder="123 Main St, City, State, ZIP" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="checkoutCard">Card Number</label>
+                    <input type="text" id="checkoutCard" placeholder="4242 4242 4242 4242" maxlength="19" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkoutExpiry">Expiry</label>
+                        <input type="text" id="checkoutExpiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkoutCVV">CVV</label>
+                        <input type="text" id="checkoutCVV" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+                <div class="checkout-total">
+                    <div class="coupon-input-row">
+                        <input type="text" id="couponCode" placeholder="Coupon code" class="coupon-input">
+                        <button type="button" class="coupon-apply-btn" id="applyCoupon">Apply</button>
+                    </div>
+                    <div class="coupon-message" id="couponMessage"></div>
+                    <div class="checkout-total-row">
+                        <span>Order Total:</span>
+                        <span id="checkoutTotal">$0</span>
+                    </div>
+                </div>
+                <button type="submit" class="cta-btn checkout-submit-btn">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Confirmation -->
+    <div class="confirmation-overlay" id="confirmationOverlay">
+        <div class="confirmation-panel">
+            <div class="confirmation-icon">✅</div>
+            <h2>Order Placed Successfully!</h2>
+            <p class="confirmation-id" id="confirmationId"></p>
+            <div class="confirmation-details" id="confirmationDetails"></div>
+            <button class="cta-btn" id="confirmationClose">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image" id="modalImage"></div>
+                <div class="modal-info">
+                    <span class="modal-badge" id="modalBadge"></span>
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <p class="modal-description" id="modalDescription"></p>
+                    <div class="modal-features" id="modalFeatures"></div>
+                    <div class="modal-price" id="modalPrice"></div>
+                    <div class="modal-actions">
+                        <button class="cta-btn modal-cart-btn" id="modalCartBtn">Add to Cart</button>
+                        <button class="wishlist-btn" id="modalWishlistBtn" aria-label="Add to Wishlist">♡</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">RoboTech</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="compare.html" class="nav-link nav-page-link">Compare</a></li>
+                <li><a href="#stats" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <!-- Theme Toggle -->
+                <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="theme-icon-dark">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="theme-icon-light">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <a href="auth.html" class="icon-btn" id="userBtn" aria-label="Account">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                <!-- User Dropdown (shown when logged in) -->
+                <div class="user-dropdown-wrapper" id="userDropdownWrapper" style="display:none;">
+                    <button class="user-avatar-btn" id="userAvatarBtn"></button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-dropdown-header" id="userDropdownHeader"></div>
+                        <a href="tracking.html" class="user-dropdown-item">📦 Track Order</a>
+                        <a href="admin.html" class="user-dropdown-item" id="adminLink" style="display:none;">🛡️ Admin Panel</a>
+                        <button class="user-dropdown-item" id="logoutBtnMain">🚪 Logout</button>
+                    </div>
+                </div>
+                <button class="icon-btn" id="searchBtn" aria-label="Search">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="cartBtn" aria-label="Shopping Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="badge" id="cartBadge">0</span>
+                </button>
+                <!-- Hamburger Menu -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider Section -->
+    <section class="hero-slider" id="home">
+        <!-- Cursor Glow -->
+        <div class="cursor-glow" id="cursorGlow"></div>
+        <!-- Particle Background -->
+        <canvas class="particles-canvas" id="particlesCanvas"></canvas>
+
+        <div class="slider-container">
+            <div class="slide active">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1 class="slide-title">Next-Gen Autonomous Drones</h1>
+                        <p class="slide-description">Experience the future of aerial technology with AI-powered flight
+                            systems</p>
+                        <button class="cta-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Now</button>
+                    </div>
+                    <div class="slide-image">
+                        <div class="drone-visual"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1 class="slide-title">Advanced Robotics</h1>
+                        <p class="slide-description">Cutting-edge robotic systems for industrial and personal use</p>
+                        <button class="cta-btn" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">Discover More</button>
+                    </div>
+                    <div class="slide-image">
+                        <div class="robot-visual"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1 class="slide-title">Smart Automation</h1>
+                        <p class="slide-description">Transform your workflow with intelligent robotic solutions</p>
+                        <button class="cta-btn" onclick="openCartDrawer()">Shop Collection</button>
+                    </div>
+                    <div class="slide-image">
+                        <div class="automation-visual"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Navigation Dots -->
+        <div class="slider-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+        </div>
+
+        <!-- Slider Arrows -->
+        <button class="slider-arrow prev" id="prevSlide" aria-label="Previous Slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <button class="slider-arrow next" id="nextSlide" aria-label="Next Slide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+        </button>
+    </section>
+
+    <!-- Brand Logos Strip -->
+    <section class="brands-section">
+        <div class="brands-container">
+            <p class="brands-title">Trusted by Industry Leaders</p>
+            <div class="brands-track">
+                <div class="brand-item">🚁 SkyMaster</div>
+                <div class="brand-item">🤖 AutoBot</div>
+                <div class="brand-item">🛸 AeroDyne</div>
+                <div class="brand-item">⚡ TechForce</div>
+                <div class="brand-item">🔧 MechaPro</div>
+                <div class="brand-item">🌐 GlobalDrone</div>
+                <div class="brand-item">🚁 SkyMaster</div>
+                <div class="brand-item">🤖 AutoBot</div>
+                <div class="brand-item">🛸 AeroDyne</div>
+                <div class="brand-item">⚡ TechForce</div>
+                <div class="brand-item">🔧 MechaPro</div>
+                <div class="brand-item">🌐 GlobalDrone</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Carousel -->
+    <section class="featured-carousel-section">
+        <div class="featured-carousel-header">
+            <h2>Featured Products</h2>
+        </div>
+        <div class="featured-carousel-track" id="featuredTrack">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="stats-bg-gradient"></div>
+        <div class="stats-container">
+            <div class="stat-card reveal">
+                <div class="stat-icon">🚀</div>
+                <div class="stat-number" data-target="500">0</div>
+                <div class="stat-label">Drones Sold</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-icon">🌍</div>
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Countries Served</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-number" data-target="98">0</div>
+                <div class="stat-label">Customer Satisfaction %</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-number" data-target="25">0</div>
+                <div class="stat-label">Industry Awards</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-choose-section">
+        <div class="why-choose-container">
+            <h2 class="section-title reveal">Why Choose RoboTech?</h2>
+            <div class="why-choose-grid">
+                <div class="why-card reveal">
+                    <div class="why-icon">🚚</div>
+                    <h3>Fast Shipping</h3>
+                    <p>Free worldwide shipping on all orders. Delivered within 3-5 business days.</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">🛡️</div>
+                    <h3>2-Year Warranty</h3>
+                    <p>Complete coverage on all products. Hassle-free replacements guaranteed.</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">💬</div>
+                    <h3>24/7 Support</h3>
+                    <p>Expert technical support available around the clock via chat, email, or phone.</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">🔄</div>
+                    <h3>Easy Returns</h3>
+                    <p>30-day money-back guarantee. No questions asked return policy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section with Filters -->
+    <section class="products-section" id="products">
+        <div class="products-container">
+            <!-- Left Sidebar Filter (Bifurcator) -->
+            <aside class="filter-sidebar">
+                <div class="filter-header">
+                    <h2>Filters</h2>
+                    <button class="reset-btn" id="resetFilters">Reset All</button>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Category</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="category" value="all" checked>
+                            <span class="checkmark"></span>
+                            <span class="option-text">All Drones</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="category" value="drones">
+                            <span class="checkmark"></span>
+                            <span class="option-text">Drones</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Price Range</h3>
+                    <div class="price-range">
+                        <input type="range" id="priceRange" min="0" max="5000" value="5000" step="100" aria-label="Price range filter">
+                        <div class="price-labels">
+                            <span>$0</span>
+                            <span id="maxPrice">$5000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Features</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="features" value="ai">
+                            <span class="checkmark"></span>
+                            <span class="option-text">AI Powered</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="features" value="4k">
+                            <span class="checkmark"></span>
+                            <span class="option-text">4K Camera</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="features" value="gps">
+                            <span class="checkmark"></span>
+                            <span class="option-text">GPS Enabled</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="features" value="autonomous">
+                            <span class="checkmark"></span>
+                            <span class="option-text">Autonomous</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-title">Brand</h3>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" name="brand" value="robotech">
+                            <span class="checkmark"></span>
+                            <span class="option-text">RoboTech</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="brand" value="skymaster">
+                            <span class="checkmark"></span>
+                            <span class="option-text">SkyMaster</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="brand" value="autobot">
+                            <span class="checkmark"></span>
+                            <span class="option-text">AutoBot</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Products Grid -->
+            <div class="products-content">
+                <div class="products-header">
+                    <h2>Our Products</h2>
+                    <div class="sort-options">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Product Cards will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <h2 class="section-title reveal">What Our Customers Say</h2>
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <div class="testimonial-card active">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"The SkyMaster Pro X1 exceeded all my expectations. The AI navigation is incredibly precise and the 4K footage is cinema-quality."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <strong>James Davidson</strong>
+                            <span>Professional Photographer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"We deployed 10 Industrial Cargo Drones across our warehouses. Efficiency improved by 40%. RoboTech's support team is outstanding."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SK</div>
+                        <div class="author-info">
+                            <strong>Sarah Kim</strong>
+                            <span>Operations Director, LogiTech Corp</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"Best FPV racing drone I've ever flown. The SpeedRacer is insanely fast and the build quality is top-notch. Already won 3 races!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <strong>Mike Rodriguez</strong>
+                            <span>FPV Racing Champion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-dots" id="testimonialDots">
+                <span class="t-dot active" data-index="0"></span>
+                <span class="t-dot" data-index="1"></span>
+                <span class="t-dot" data-index="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-container reveal">
+            <h2>Stay Ahead of the Curve</h2>
+            <p>Subscribe to get exclusive deals, new product launches, and drone industry insights.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <div class="newsletter-input-wrapper">
+                    <input type="email" placeholder="Enter your email address" class="newsletter-input" id="newsletterEmail" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section">
+        <div class="video-container">
+            <h2 class="section-title reveal">See Our Drones in Action</h2>
+            <div class="video-wrapper reveal">
+                <iframe 
+                    src="https://www.youtube.com/embed/mp5CHD7wdYI" 
+                    title="RoboTech Drones Showcase" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title reveal">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Do I need a license to fly a drone?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>In most countries, recreational drones under 250g don't require a license. For commercial use or heavier drones, you'll need to register with your local aviation authority (e.g., FAA in the US). We include a quick-start regulatory guide with every purchase.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What is the average battery life?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Flight time varies by model — from 18 minutes (racing drones) to 55 minutes (security drones). Most of our consumer drones average 35-45 minutes per charge. Extra batteries are available for all models.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does the warranty work?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>All RoboTech products come with a 2-year manufacturer warranty covering defects in materials and workmanship. This includes free repairs or replacement. Crash damage is covered under our optional DroneCare+ plan.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I return a drone if I'm not satisfied?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely! We offer a 30-day money-back guarantee on all products. Return the drone in its original packaging and we'll process a full refund within 5 business days. No questions asked.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Where do you deliver?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We currently ship within India only. We offer free shipping on orders over ₹75,000. Standard delivery takes 3-5 business days, with express options available at checkout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <div class="trust-badge reveal">
+                <div class="trust-icon">🔒</div>
+                <span>Secure Payment</span>
+            </div>
+            <div class="trust-badge reveal">
+                <div class="trust-icon">✈️</div>
+                <span>FAA Compliant</span>
+            </div>
+            <div class="trust-badge reveal">
+                <div class="trust-icon">🏅</div>
+                <span>ISO 9001 Certified</span>
+            </div>
+            <div class="trust-badge reveal">
+                <div class="trust-icon">💳</div>
+                <span>SSL Encrypted</span>
+            </div>
+            <div class="trust-badge reveal">
+                <div class="trust-icon">📦</div>
+                <span>Insured Shipping</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About RoboTech</h3>
+                <p>Leading provider of cutting-edge robotics and drone technology for professionals and enthusiasts.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#products">All Products</a></li>
+                    <li><a href="compare.html">Compare Drones</a></li>
+                    <li><a href="#home">Featured</a></li>
+                    <li><a href="tracking.html">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#" onclick="document.querySelector('.faq-section').scrollIntoView({behavior:'smooth'})">FAQ</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@robotech.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Mon-Fri: 9AM - 6PM EST</p>
+                <div class="social-links" style="margin-top:1rem;">
+                    <a href="#" class="social-link">Facebook</a>
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 RoboTech Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Flying Cart Animation Element -->
+    <div class="fly-to-cart" id="flyToCart"></div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav">
+        <a href="#home" class="mobile-nav-item active" data-section="home">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            </svg>
+            <span>Home</span>
+        </a>
+        <button class="mobile-nav-item" onclick="openSearch()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <span>Search</span>
+        </button>
+        <button class="mobile-nav-item" onclick="openCartDrawer()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span>Cart</span>
+            <span class="mobile-cart-badge" id="mobileCartBadge">0</span>
+        </button>
+        <a href="auth.html" class="mobile-nav-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <!-- Live Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span>🤖 RoboTech Support</span>
+                <button class="chat-minimize" onclick="toggleChat()">−</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">
+                    <span>Hi! 👋 I'm RoboBot. How can I help you today?</span>
+                </div>
+            </div>
+            <div class="chat-input-wrapper">
+                <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+                <button class="chat-send" id="chatSend">→</button>
+            </div>
+        </div>
+        <button class="chat-fab" id="chatFab" onclick="toggleChat()">
+            <span class="chat-fab-icon">💬</span>
+            <span class="chat-fab-pulse"></span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
