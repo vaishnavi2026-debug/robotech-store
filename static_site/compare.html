@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Compare – The Robot Alchemist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .compare-page { margin-top:80px; max-width:1100px; margin-left:auto; margin-right:auto; padding:40px 24px; min-height:calc(100vh - 80px); }
+        .compare-page h1 { font-size:2rem; font-weight:800; text-align:center; margin-bottom:8px; }
+        .compare-page > p { text-align:center; color:var(--muted2); margin-bottom:40px; }
+        .compare-slots { display:flex; gap:20px; justify-content:center; align-items:center; flex-wrap:wrap; margin-bottom:40px; }
+        .compare-slot { width:220px; height:260px; background:var(--bg3); border:2px dashed var(--border2); border-radius:var(--r16); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color var(--t); }
+        .compare-slot:hover { border-color:var(--muted); }
+        .compare-slot.filled { border-style:solid; border-color:var(--accent); }
+        .slot-placeholder { text-align:center; color:var(--muted); }
+        .slot-placeholder .plus { font-size:2rem; display:block; margin-bottom:8px; }
+        .slot-filled { width:100%; height:100%; padding:16px; display:flex; flex-direction:column; align-items:center; position:relative; }
+        .slot-filled img { width:100%; height:130px; object-fit:contain; margin-bottom:10px; }
+        .slot-filled .name { font-size:.85rem; font-weight:600; text-align:center; }
+        .slot-filled .price { font-weight:800; margin-top:4px; }
+        .slot-remove { position:absolute; top:8px; right:8px; width:24px; height:24px; border-radius:50%; background:var(--bg4); border:1px solid var(--border2); color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.9rem; }
+        .compare-vs { font-size:1.2rem; font-weight:800; color:var(--muted); }
+        .compare-table { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:var(--r16); overflow:hidden; display:none; }
+        .compare-table.active { display:block; }
+        .compare-table table { width:100%; border-collapse:collapse; }
+        .compare-table th { background:var(--bg4); padding:12px 16px; text-align:center; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+        .compare-table th:first-child { text-align:left; }
+        .compare-table td { padding:10px 16px; border-top:1px solid var(--border); text-align:center; font-size:.88rem; color:var(--muted2); }
+        .compare-table td:first-child { text-align:left; font-weight:600; color:var(--text); }
+        .compare-table .best { color:var(--green); font-weight:700; }
+        .selector-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); backdrop-filter:blur(8px); z-index:5000; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:all .3s; }
+        .selector-overlay.active { opacity:1; visibility:visible; }
+        .selector-modal { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r16); width:90%; max-width:700px; max-height:80vh; overflow-y:auto; padding:24px; }
+        .selector-modal h3 { margin-bottom:16px; }
+        .selector-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+        .selector-item { background:var(--bg4); border:1px solid var(--border); border-radius:var(--r12); padding:12px; cursor:pointer; text-align:center; transition:all var(--t); }
+        .selector-item:hover { border-color:var(--accent); transform:translateY(-2px); }
+        .selector-item img { width:100%; height:80px; object-fit:contain; margin-bottom:8px; }
+        .selector-item .name { font-size:.8rem; font-weight:600; }
+        .selector-item .price { font-weight:800; font-size:.9rem; margin-top:4px; }
+        @media(max-width:768px) { .compare-slots { flex-direction:column; } .compare-slot { width:100%; height:180px; } .compare-vs { display:none; } }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="index.html" class="logo"><div class="logo-icon">⚡</div>The Robot <span>Alchemist</span></a>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="store.html">Store</a>
+            <a href="compare.html" class="active">Compare</a>
+        </nav>
+        <div class="header-actions">
+            <button class="h-btn" id="searchToggle">Search</button>
+            <a href="contact.html" class="h-btn">Get Quote</a>
+            <button class="h-btn h-btn-primary" id="cartToggle">Cart <span class="cart-count" id="cartCount">0</span></button>
+            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <div class="compare-page">
+        <h1>Compare Products</h1>
+        <p>Select 2-3 products to compare side by side</p>
+        <div class="compare-slots">
+            <div class="compare-slot" id="slot0" onclick="openSelector(0)"><div class="slot-placeholder"><span class="plus">+</span>Select Product</div></div>
+            <div class="compare-vs">VS</div>
+            <div class="compare-slot" id="slot1" onclick="openSelector(1)"><div class="slot-placeholder"><span class="plus">+</span>Select Product</div></div>
+            <div class="compare-vs">VS</div>
+            <div class="compare-slot" id="slot2" onclick="openSelector(2)"><div class="slot-placeholder"><span class="plus">+</span>Select Product</div></div>
+        </div>
+        <div class="compare-table" id="compareTable"><table id="compareTableBody"></table></div>
+    </div>
+
+    <div class="selector-overlay" id="selectorOverlay" onclick="if(event.target===this)closeSelector()">
+        <div class="selector-modal">
+            <h3>Choose a product</h3>
+            <div class="selector-grid" id="selectorGrid"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        const specs = {
+            1:{cat:'Drones',weight:'180g',material:'Carbon Fiber',warranty:'6 months'},
+            2:{cat:'Drones',weight:'220g (set)',material:'Aluminum',warranty:'6 months'},
+            3:{cat:'Drones',weight:'35g',material:'PCB',warranty:'1 year'},
+            4:{cat:'Drones',weight:'28g',material:'PCB',warranty:'1 year'},
+            5:{cat:'Drones',weight:'320g',material:'ABS Plastic',warranty:'1 year'},
+            6:{cat:'Drones',weight:'850g',material:'ABS + CF',warranty:'1 year'},
+            7:{cat:'IoT',weight:'10g',material:'PCB',warranty:'6 months'},
+            8:{cat:'IoT',weight:'250g (kit)',material:'Mixed',warranty:'6 months'},
+            9:{cat:'IoT',weight:'400g (kit)',material:'Mixed',warranty:'1 year'},
+            10:{cat:'IoT',weight:'46g',material:'PCB',warranty:'1 year'},
+            11:{cat:'DIY',weight:'1.2kg (kit)',material:'Mixed',warranty:'6 months'},
+            12:{cat:'DIY',weight:'600g',material:'Aluminum + ABS',warranty:'6 months'},
+            13:{cat:'Parts',weight:'9g each',material:'Plastic + Metal',warranty:'3 months'},
+            14:{cat:'Drones',weight:'155g',material:'LiPo cells',warranty:'3 months'},
+            15:{cat:'IoT',weight:'5g',material:'PCB + Glass',warranty:'6 months'},
+            16:{cat:'Parts',weight:'1.8kg',material:'Metal',warranty:'1 year'}
+        };
+        let selected=[null,null,null], slotIdx=0;
+        function openSelector(i){slotIdx=i;const o=document.getElementById('selectorOverlay'),g=document.getElementById('selectorGrid');g.innerHTML=products.map(p=>`<div class="selector-item" onclick="selectProduct(${p.id})"><img src="${p.image}" alt="${p.name}"><div class="name">${p.name}</div><div class="price">₹${p.price}</div></div>`).join('');o.classList.add('active');}
+        function closeSelector(){document.getElementById('selectorOverlay').classList.remove('active');}
+        function selectProduct(id){selected[slotIdx]=products.find(p=>p.id===id);closeSelector();renderSlots();renderTable();}
+        function removeSlot(i){selected[i]=null;renderSlots();renderTable();}
+        function renderSlots(){for(let i=0;i<3;i++){const s=document.getElementById('slot'+i),p=selected[i];if(p){s.classList.add('filled');s.innerHTML=`<div class="slot-filled"><button class="slot-remove" onclick="event.stopPropagation();removeSlot(${i})">×</button><img src="${p.image}" alt="${p.name}"><div class="name">${p.name}</div><div class="price">₹${p.price}</div></div>`;s.onclick=()=>openSelector(i);}else{s.classList.remove('filled');s.innerHTML=`<div class="slot-placeholder"><span class="plus">+</span>Select Product</div>`;s.onclick=()=>openSelector(i);}}}
+        function renderTable(){const sel=selected.filter(Boolean),table=document.getElementById('compareTable'),tbody=document.getElementById('compareTableBody');if(sel.length<2){table.classList.remove('active');return;}table.classList.add('active');const rows=['Price','Category','Rating','Reviews','Weight','Material','Warranty'];let h='<thead><tr><th>Spec</th>'+sel.map(p=>`<th>${p.name}</th>`).join('')+'</tr></thead><tbody>';rows.forEach(r=>{h+='<tr><td>'+r+'</td>';sel.forEach(p=>{let v='—';if(r==='Price')v='₹'+p.price;else if(r==='Category')v=specs[p.id]?.cat||p.cat;else if(r==='Rating')v=p.rating+'/5';else if(r==='Reviews')v=p.reviews;else if(r==='Weight')v=specs[p.id]?.weight||'—';else if(r==='Material')v=specs[p.id]?.material||'—';else if(r==='Warranty')v=specs[p.id]?.warranty||'—';h+='<td>'+v+'</td>';});h+='</tr>';});h+='</tbody>';tbody.innerHTML=h;}
+    </script>
+</body>
+</html>

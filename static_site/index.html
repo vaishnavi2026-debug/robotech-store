@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>The Robot Alchemist – Advanced Drone Systems & IoT Solutions</title>
+    <meta name="description" content="India's premier destination for FPV drones, training systems, IoT solutions, and DIY electronics. Engineering the future of flight.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <div class="logo-mark">RA</div>
+            <span class="logo-name">THE ROBOT ALCHEMIST</span>
+        </a>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html" class="active">Home</a>
+            <div class="nav-dropdown-wrap">
+                <a href="store.html" class="nav-has-dropdown">Store</a>
+                <div class="mega-menu">
+                    <a href="store.html?cat=drones" class="mega-item">
+                        <div class="mega-img" style="background-image:url('https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=400&auto=format&fit=crop')"></div>
+                        <span class="mega-label">FPV Drones</span>
+                    </a>
+                    <a href="store.html?cat=drones" class="mega-item">
+                        <div class="mega-img" style="background-image:url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=400&auto=format&fit=crop')"></div>
+                        <span class="mega-label">Training Drones</span>
+                    </a>
+                    <a href="store.html?cat=iot" class="mega-item">
+                        <div class="mega-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400&auto=format&fit=crop')"></div>
+                        <span class="mega-label">IoT Solutions</span>
+                    </a>
+                    <a href="store.html?cat=diy" class="mega-item">
+                        <div class="mega-img" style="background-image:url('https://images.unsplash.com/photo-1608564697071-ddf911d81370?q=80&w=400&auto=format&fit=crop')"></div>
+                        <span class="mega-label">DIY Kits</span>
+                    </a>
+                    <a href="store.html?cat=parts" class="mega-item">
+                        <div class="mega-img" style="background-image:url('https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=400&auto=format&fit=crop')"></div>
+                        <span class="mega-label">Parts & Tools</span>
+                    </a>
+                </div>
+            </div>
+            <a href="compare.html">Compare</a>
+        </nav>
+        <div class="header-actions">
+            <button class="h-btn" id="searchToggle" aria-label="Search">Search</button>
+            <a href="contact.html" class="h-btn">Get Quote</a>
+            <button class="h-btn h-btn-primary" id="cartToggle">Cart <span class="cart-count" id="cartCount">0</span></button>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SEARCH OVERLAY -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-modal">
+            <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
+            <button class="search-close" id="searchClose">ESC</button>
+            <div class="search-results" id="searchResults"><p class="search-hint">Start typing to search...</p></div>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3>YOUR CART</h3>
+            <button class="cart-close" id="cartClose">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-primary cart-checkout-btn" id="checkoutBtn">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1579820010410-c10411aaaa88?q=80&w=2000&auto=format&fit=crop')"></div>
+            <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=2000&auto=format&fit=crop')"></div>
+            <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop')"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-label">ADVANCED AERIAL SYSTEMS</p>
+            <h1 class="hero-title">Engineering<br>The Future Of Flight.</h1>
+            <p class="hero-desc">Building next-generation drone platforms with precision engineering, tactical intelligence, and mission-focused design.</p>
+            <div class="hero-actions">
+                <a href="store.html" class="btn-primary">Explore Store</a>
+                <a href="#about" class="btn-ghost">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-nav">
+            <button class="hero-dot active" onclick="goToSlide(0)"></button>
+            <button class="hero-dot" onclick="goToSlide(1)"></button>
+            <button class="hero-dot" onclick="goToSlide(2)"></button>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section">
+        <div class="container stats-row">
+            <div class="stat"><span class="stat-num" data-target="5">0+</span><span class="stat-label">YEARS ACTIVE</span></div>
+            <div class="stat"><span class="stat-num" data-target="500">0+</span><span class="stat-label">PRODUCTS DELIVERED</span></div>
+            <div class="stat"><span class="stat-num" data-target="28">0+</span><span class="stat-label">STATES COVERED</span></div>
+            <div class="stat"><span class="stat-num" data-target="200">0+</span><span class="stat-label">CUSTOMERS TRAINED</span></div>
+            <div class="stat"><span class="stat-num" data-target="5">0+</span><span class="stat-label">ARMY UNITS SERVED</span></div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <!-- ABOUT -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-label">
+                    <span class="section-tag-text">ABOUT US</span>
+                </div>
+                <div class="about-content">
+                    <h2>Built for Makers,<br>Engineers & Professionals.</h2>
+                    <p>The Robot Alchemist was founded with a passion for technology, innovation, and the endless possibilities of autonomous systems. We provide premium FPV drone components, IoT modules, and DIY electronics kits to professionals, students, and defense organizations across India.</p>
+                    <p>Our commitment: reliable products, expert support, and genuine innovation — not just another electronics store.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTE -->
+    <section class="quote-section">
+        <div class="container">
+            <blockquote class="big-quote">"Our team of engineers and makers works to push the boundaries of autonomous aerial systems, ensuring every product we deliver not only meets requirements but exceeds them."</blockquote>
+            <cite class="big-cite">— Founder, The Robot Alchemist</cite>
+        </div>
+    </section>
+
+    <!-- VISION & MISSION -->
+    <section class="vm-section">
+        <div class="container vm-grid">
+            <div class="vm-card">
+                <span class="section-tag-text">VISION</span>
+                <h3>Our Vision</h3>
+                <p>To become a leading Indian drone technology company driving innovation in autonomous aerial systems and maker education. We aspire to strengthen national technological self-reliance while empowering future engineers through world-class products and training.</p>
+            </div>
+            <div class="vm-card">
+                <span class="section-tag-text">MISSION</span>
+                <h3>Our Mission</h3>
+                <p>To deliver premium drone components and IoT solutions that enable innovation across education, defense, and commercial sectors. We are committed to building a skilled maker ecosystem through quality products, technical support, and accessible technology.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section class="platforms-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag-text">PLATFORMS</span>
+            </div>
+            <h2 class="section-heading">What We Offer</h2>
+            <div class="platforms-grid">
+                <a href="store.html?cat=drones" class="platform-card">
+                    <div class="platform-img" style="background-image:url('https://images.unsplash.com/photo-1527977966376-1c8408f9f108?q=80&w=800&auto=format&fit=crop')"></div>
+                    <h3>FPV Drones</h3>
+                    <p>Racing frames, brushless motors, ESCs, flight controllers, and FPV goggles.</p>
+                </a>
+                <a href="store.html?cat=drones" class="platform-card">
+                    <div class="platform-img" style="background-image:url('https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop')"></div>
+                    <h3>Training Drones</h3>
+                    <p>Beginner-friendly systems for schools, colleges, and drone training programs.</p>
+                </a>
+                <a href="store.html?cat=iot" class="platform-card">
+                    <div class="platform-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop')"></div>
+                    <h3>IoT Solutions</h3>
+                    <p>ESP32, Raspberry Pi, sensors, and smart project kits for institutions.</p>
+                </a>
+                <a href="store.html?cat=diy" class="platform-card">
+                    <div class="platform-img" style="background-image:url('https://images.unsplash.com/photo-1608564697071-ddf911d81370?q=80&w=800&auto=format&fit=crop')"></div>
+                    <h3>DIY & Maker Kits</h3>
+                    <p>Arduino starter kits, robotic chassis, servos, and everything a maker needs.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag-text">FEATURED</span>
+            </div>
+            <h2 class="section-heading">Top Products</h2>
+        </div>
+        <div class="featured-track" id="featuredTrack"></div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonial-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag-text">TESTIMONIALS</span>
+            </div>
+            <h2 class="section-heading">What People Say</h2>
+            <div class="stack-cards" id="stackCards" onclick="nextCard()">
+                <div class="stack-card active" data-index="0">
+                    <p class="stack-quote">"The FPV frame quality and brushless motors are outstanding. We've deployed their training drones across 3 institutes with zero issues."</p>
+                    <div class="stack-author">
+                        <div class="stack-avatar">RS</div>
+                        <div><strong>Prof. Sharma</strong><span>IIT Delhi</span></div>
+                    </div>
+                    <div class="stack-stars">★★★★★</div>
+                </div>
+                <div class="stack-card" data-index="1">
+                    <p class="stack-quote">"Won 3 races with the Carbon FPV Frame. Build quality is insane for the price. Already ordered a second set of motors."</p>
+                    <div class="stack-author">
+                        <div class="stack-avatar">RM</div>
+                        <div><strong>Rahul M.</strong><span>FPV Racing Pilot</span></div>
+                    </div>
+                    <div class="stack-stars">★★★★★</div>
+                </div>
+                <div class="stack-card" data-index="2">
+                    <p class="stack-quote">"Delivered in 3 days. The Arduino kit had everything my son needed for his college project. Great packaging too."</p>
+                    <div class="stack-author">
+                        <div class="stack-avatar">PK</div>
+                        <div><strong>Priya K.</strong><span>Parent & Buyer</span></div>
+                    </div>
+                    <div class="stack-stars">★★★★★</div>
+                </div>
+                <div class="stack-card" data-index="3">
+                    <p class="stack-quote">"Reliable training drones for our unit. The team understands defense requirements and delivers on time, every time."</p>
+                    <div class="stack-author">
+                        <div class="stack-avatar">AK</div>
+                        <div><strong>Capt. Arjun K.</strong><span>Indian Army</span></div>
+                    </div>
+                    <div class="stack-stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag-text">SUPPORT</span>
+            </div>
+            <h2 class="section-heading">FAQ</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-q" onclick="toggleFaq(this)"><span>What types of products do you sell?</span><span class="faq-arrow">+</span></button>
+                    <div class="faq-a"><p>We specialize in FPV drone components, training drone kits, IoT modules (ESP32, Raspberry Pi), and DIY electronics kits for makers, students, and professionals.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" onclick="toggleFaq(this)"><span>Do I need a license to fly a drone?</span><span class="faq-arrow">+</span></button>
+                    <div class="faq-a"><p>Recreational drones under 250g don't require a license in India. For heavier drones, register with DGCA. We include a regulatory guide with every drone purchase.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" onclick="toggleFaq(this)"><span>Where do you deliver?</span><span class="faq-arrow">+</span></button>
+                    <div class="faq-a"><p>We deliver across India. Free shipping on orders over ₹2,000. Standard delivery takes 3-5 business days.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" onclick="toggleFaq(this)"><span>What is your return policy?</span><span class="faq-arrow">+</span></button>
+                    <div class="faq-a"><p>30-day return policy on all unused products in original packaging. Full refund within 5 business days.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" onclick="toggleFaq(this)"><span>Do you provide training and technical support?</span><span class="faq-arrow">+</span></button>
+                    <div class="faq-a"><p>Yes. We offer technical support via email and phone, plus documentation with every product. Custom training programs available for institutions.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer" id="contact">
+        <div class="container footer-top">
+            <div class="footer-brand">
+                <p class="footer-tagline">ADVANCED DRONE SYSTEMS & IOT SOLUTIONS</p>
+                <h2 class="footer-heading">Engineering The Future Of Flight.</h2>
+                <div class="footer-cta">
+                    <a href="store.html" class="btn-primary">Visit Store</a>
+                    <a href="mailto:hello@robotalchemist.in" class="btn-ghost">Contact Us</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>PLATFORMS</h4>
+                <a href="store.html?cat=drones">FPV Drones</a>
+                <a href="store.html?cat=drones">Training Drones</a>
+                <a href="store.html?cat=iot">IoT Solutions</a>
+                <a href="store.html?cat=diy">DIY Kits</a>
+            </div>
+            <div class="footer-col">
+                <h4>COMPANY</h4>
+                <a href="#about">About</a>
+                <a href="store.html">Store</a>
+                <a href="compare.html">Compare</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-col">
+                <h4>CONTACT</h4>
+                <p>hello@robotalchemist.in</p>
+                <p>Mon–Sat, 10AM–7PM IST</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; THE ROBOT ALCHEMIST. 2026. ALL RIGHTS RESERVED.</p>
+            <p class="footer-status">SYSTEMS OPERATIONAL</p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

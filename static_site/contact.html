@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Contact – The Robot Alchemist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-page { padding-top:120px; padding-bottom:80px; min-height:100vh; }
+        
+        .contact-hero { margin-bottom:80px; }
+        .contact-hero .section-tag-text { margin-bottom:16px; display:block; }
+        .contact-hero h1 { font-size:clamp(2.5rem,5vw,4rem); font-weight:900; letter-spacing:-1.5px; margin-bottom:16px; }
+        .contact-hero p { color:var(--muted2); font-size:1.05rem; max-width:550px; line-height:1.7; }
+
+        .contact-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:80px; }
+
+        /* Left: Direct Vectors */
+        .contact-channels { }
+        .channels-header { margin-bottom:40px; }
+        .channels-header .section-tag-text { display:block; margin-bottom:8px; }
+        .channels-header h2 { font-size:1.5rem; font-weight:800; letter-spacing:-0.5px; margin-bottom:8px; }
+        .channels-header p { color:var(--muted2); font-size:0.9rem; }
+
+        .channel-card { padding:28px 0; border-bottom:1px solid var(--border); }
+        .channel-card:first-child { border-top:1px solid var(--border); }
+        .channel-card h3 { font-size:0.7rem; font-weight:700; letter-spacing:2px; color:var(--muted); margin-bottom:12px; }
+        .channel-card a { display:block; font-size:1.1rem; font-weight:600; color:var(--text); margin-bottom:4px; transition:opacity var(--t); }
+        .channel-card a:hover { opacity:0.7; }
+        .channel-card p { font-size:0.8rem; color:var(--muted); margin-top:8px; }
+
+        /* Right: Form */
+        .contact-form-section { }
+        .form-header { margin-bottom:32px; }
+        .form-header .section-tag-text { display:block; margin-bottom:8px; }
+        .form-header h3 { font-size:1.3rem; font-weight:800; margin-bottom:8px; }
+        .form-header p { color:var(--muted2); font-size:0.85rem; }
+
+        .contact-form { display:flex; flex-direction:column; gap:20px; }
+        .form-field { display:flex; flex-direction:column; gap:6px; }
+        .form-field label { font-size:0.7rem; font-weight:700; letter-spacing:1.5px; color:var(--muted); }
+        .form-field input,
+        .form-field textarea {
+            background:var(--bg3);
+            border:1px solid var(--border2);
+            border-radius:var(--r8);
+            padding:14px 16px;
+            color:var(--text);
+            font-family:var(--font);
+            font-size:0.9rem;
+            outline:none;
+            transition:border-color var(--t);
+        }
+        .form-field input:focus,
+        .form-field textarea:focus { border-color:rgba(255,255,255,0.25); }
+        .form-field textarea { resize:vertical; min-height:120px; }
+        .form-field input::placeholder,
+        .form-field textarea::placeholder { color:var(--muted); }
+
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+        .form-submit { margin-top:8px; display:flex; align-items:center; gap:8px; }
+        .form-submit .btn-primary { padding:16px 36px; }
+        .form-note { font-size:0.75rem; color:var(--muted); margin-top:16px; }
+
+        @media (max-width:768px) {
+            .contact-grid { grid-template-columns:1fr; gap:48px; }
+            .form-row { grid-template-columns:1fr; }
+            .contact-page { padding-top:100px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="site-header">
+        <a href="index.html" class="logo">
+            <div class="logo-mark">RA</div>
+            <span class="logo-name">THE ROBOT ALCHEMIST</span>
+        </a>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="store.html">Store</a>
+            <a href="compare.html">Compare</a>
+        </nav>
+        <div class="header-actions">
+            <a href="contact.html" class="h-btn h-btn-primary">Get Quote</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <div class="contact-page container">
+        <!-- Hero -->
+        <div class="contact-hero">
+            <span class="section-tag-text">COMMUNICATIONS UPLINK</span>
+            <h1>Get in Touch</h1>
+            <p>Establish direct contact with The Robot Alchemist for product inquiries, bulk orders, or technical support.</p>
+        </div>
+
+        <!-- Grid -->
+        <div class="contact-grid">
+            <!-- Left: Channels -->
+            <div class="contact-channels">
+                <div class="channels-header">
+                    <span class="section-tag-text">CHANNELS</span>
+                    <h2>Direct Vectors</h2>
+                    <p>Connect with our team during operational hours for rapid response.</p>
+                </div>
+
+                <div class="channel-card">
+                    <h3>VOICE COMMUNICATIONS</h3>
+                    <a href="tel:+91XXXXXXXXXX">+91-XXXXX-XXXXX</a>
+                    <p>09:00 AM – 07:00 PM | Monday – Saturday</p>
+                </div>
+
+                <div class="channel-card">
+                    <h3>DIGITAL TRANSMISSION</h3>
+                    <a href="mailto:hello@robotalchemist.in">hello@robotalchemist.in</a>
+                    <p>24/7 — Responses within 24 hours</p>
+                </div>
+
+                <div class="channel-card">
+                    <h3>WHATSAPP</h3>
+                    <a href="https://wa.me/91XXXXXXXXXX" target="_blank">Chat on WhatsApp</a>
+                    <p>Quick queries and order updates</p>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="contact-form-section">
+                <div class="form-header">
+                    <span class="section-tag-text">ENGAGEMENT PROTOCOL</span>
+                    <h3>Send a Transmission</h3>
+                    <p>Whether sourcing components, placing bulk orders, or scheduling a consultation — we're standing by.</p>
+                </div>
+
+                <form class="contact-form" id="contactForm" onsubmit="handleContact(event)">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>FULL NAME *</label>
+                            <input type="text" placeholder="Your name" required>
+                        </div>
+                        <div class="form-field">
+                            <label>EMAIL ADDRESS *</label>
+                            <input type="email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>PHONE</label>
+                            <input type="tel" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                        <div class="form-field">
+                            <label>SUBJECT *</label>
+                            <input type="text" placeholder="Product inquiry, bulk order, etc." required>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>MESSAGE *</label>
+                        <textarea placeholder="Describe your requirements..." required></textarea>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit" class="btn-primary">Transmit Message</button>
+                    </div>
+                    <p class="form-note">Responses delivered to your email within 24–48 hrs.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-bottom">
+            <p>&copy; THE ROBOT ALCHEMIST. 2026. ALL RIGHTS RESERVED.</p>
+            <p class="footer-status">SYSTEMS OPERATIONAL</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger
+        document.getElementById('hamburger')?.addEventListener('click', () => {
+            document.getElementById('hamburger')?.classList.toggle('active');
+            document.getElementById('mainNav')?.classList.toggle('active');
+        });
+
+        // Form handler
+        function handleContact(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.textContent = 'Message Sent ✓';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = 'Transmit Message';
+                btn.style.opacity = '1';
+                btn.disabled = false;
+                e.target.reset();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

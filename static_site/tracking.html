@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Track Order – The Robot Alchemist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .tracking-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+        .tracking-box{width:100%;max-width:600px;}
+        .tracking-search{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r16);padding:40px;text-align:center;margin-bottom:24px;}
+        .tracking-search h1{font-size:1.8rem;margin-bottom:8px;}
+        .tracking-search p{color:var(--muted2);margin-bottom:24px;}
+        .tracking-input-row{display:flex;gap:8px;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r8);padding:4px;}
+        .tracking-input-row input{flex:1;background:none;border:none;color:var(--text);padding:10px 14px;font-size:1rem;outline:none;}
+        .tracking-input-row button{background:var(--primary);color:var(--bg);border:none;padding:10px 20px;border-radius:6px;font-weight:700;cursor:pointer;}
+        .tracking-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r16);padding:32px;display:none;}
+        .tracking-result.active{display:block;}
+        .tracking-result h2{font-size:1.2rem;margin-bottom:20px;}
+        .timeline{position:relative;padding-left:40px;}
+        .timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:2px;background:var(--border2);}
+        .timeline-step{position:relative;padding:16px 0;}
+        .timeline-dot{position:absolute;left:-40px;top:18px;width:30px;height:30px;border-radius:50%;background:var(--bg4);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.8rem;}
+        .timeline-step.done .timeline-dot{background:var(--green);border-color:var(--green);color:#000;}
+        .timeline-step.current .timeline-dot{background:var(--primary);border-color:var(--primary);color:var(--bg);box-shadow:0 0 12px rgba(255,255,255,.3);}
+        .timeline-step h4{font-size:.95rem;font-weight:600;}
+        .timeline-step p{font-size:.8rem;color:var(--muted);}
+        .tracking-items{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+        .tracking-items h3{font-size:1rem;margin-bottom:12px;}
+        .t-item{display:flex;gap:10px;align-items:center;padding:8px 0;font-size:.85rem;}
+        .t-item img{width:40px;height:40px;border-radius:6px;object-fit:cover;background:var(--bg4);}
+        .tracking-error{text-align:center;color:var(--muted);display:none;padding:20px;}
+        .tracking-error.active{display:block;}
+        .back-link{display:block;text-align:center;margin-top:24px;color:var(--muted2);font-size:.9rem;}
+        .back-link:hover{color:var(--text);}
+    </style>
+</head>
+<body>
+    <div class="tracking-page">
+        <div class="tracking-box">
+            <div class="tracking-search">
+                <h1>📦 Track Your Order</h1>
+                <p>Enter your order ID</p>
+                <div class="tracking-input-row">
+                    <input type="text" id="trackInput" placeholder="e.g. A1B2C3D4">
+                    <button onclick="trackOrder()">Track</button>
+                </div>
+            </div>
+            <div class="tracking-result" id="trackResult">
+                <h2 id="trackTitle"></h2>
+                <div class="timeline" id="timeline"></div>
+                <div class="tracking-items" id="trackItems"></div>
+            </div>
+            <div class="tracking-error" id="trackError">⚠️ Order not found. Check your ID and try again.</div>
+            <a href="index.html" class="back-link">← Back to Store</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('trackInput').addEventListener('keydown',e=>{if(e.key==='Enter')trackOrder();});
+        // Auto-track from URL param
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlId = urlParams.get('id');
+        if(urlId) { document.getElementById('trackInput').value = urlId; trackOrder(); }
+        function trackOrder(){
+            const id=document.getElementById('trackInput').value.trim().toUpperCase();
+            const orders=JSON.parse(localStorage.getItem('ra_orders')||'[]');
+            const order=orders.find(o=>o.id===id||o.id.toUpperCase()===id);
+            document.getElementById('trackResult').classList.remove('active');
+            document.getElementById('trackError').classList.remove('active');
+            if(!order){document.getElementById('trackError').classList.add('active');return;}
+            document.getElementById('trackTitle').textContent='Order #'+order.id;
+            const steps=[{label:'Confirmed',icon:'✓'},{label:'Processing',icon:'⚙️'},{label:'Shipped',icon:'🚚'},{label:'Delivered',icon:'📦'}];
+            const statusIdx={'confirmed':0,'processing':1,'shipped':2,'delivered':3}[order.status]||0;
+            document.getElementById('timeline').innerHTML=steps.map((s,i)=>{
+                const cls=i<statusIdx?'done':i===statusIdx?'current':'';
+                return `<div class="timeline-step ${cls}"><div class="timeline-dot">${i<=statusIdx?'✓':s.icon}</div><h4>${s.label}</h4><p>${i<=statusIdx?new Date(order.date).toLocaleDateString():'Pending'}</p></div>`;
+            }).join('');
+            document.getElementById('trackItems').innerHTML='<h3>Items</h3>'+order.items.map(i=>`<div class="t-item"><img src="${i.image}" alt="${i.name}"><span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString()}</strong></div>`).join('')+`<div class="t-item" style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;"><span><strong>Total</strong></span><strong>₹${order.total.toLocaleString()}</strong></div>`;
+            document.getElementById('trackResult').classList.add('active');
+        }
+    </script>
+</body>
+</html>

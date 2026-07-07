@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sign In – The Robot Alchemist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+        .auth-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r16);padding:40px;width:100%;max-width:400px;}
+        .auth-header{text-align:center;margin-bottom:32px;}
+        .auth-header .icon{font-size:2.5rem;display:block;margin-bottom:12px;}
+        .auth-header h1{font-size:1.4rem;font-weight:800;margin-bottom:4px;}
+        .auth-header p{color:var(--muted2);font-size:.9rem;}
+        .auth-tabs{display:flex;background:var(--bg4);border-radius:var(--r8);padding:4px;margin-bottom:24px;}
+        .auth-tab{flex:1;padding:10px;border:none;background:none;color:var(--muted2);font-weight:600;cursor:pointer;border-radius:6px;transition:all var(--t);}
+        .auth-tab.active{background:var(--accent);color:#fff;}
+        .auth-form{display:none;flex-direction:column;gap:14px;}
+        .auth-form.active{display:flex;}
+        .form-group{display:flex;flex-direction:column;gap:5px;}
+        .form-group label{font-size:.8rem;font-weight:600;color:var(--muted);}
+        .form-group input{background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r8);padding:10px 14px;color:var(--text);font-size:.95rem;outline:none;transition:border-color var(--t);}
+        .form-group input:focus{border-color:var(--muted);}
+        .auth-btn{width:100%;margin-top:8px;}
+        .auth-msg{text-align:center;font-size:.85rem;min-height:1.2rem;margin-top:8px;}
+        .auth-msg.error{color:#ef4444;}
+        .auth-msg.success{color:var(--green);}
+        .auth-footer{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+        .auth-footer a{color:var(--muted2);font-size:.85rem;}
+    </style>
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <span class="icon">⚡</span>
+                <h1>The Robot Alchemist</h1>
+                <p>Sign in or create an account</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showForm('login')">Sign In</button>
+                <button class="auth-tab" onclick="showForm('signup')">Sign Up</button>
+            </div>
+            <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="you@example.com" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••" required></div>
+                <button type="submit" class="btn-primary auth-btn">Sign In</button>
+                <p class="auth-msg" id="loginMsg"></p>
+            </form>
+            <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group"><label>Name</label><input type="text" id="signupName" placeholder="Your name" required></div>
+                <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="you@example.com" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="signupPass" placeholder="Min 6 chars" required minlength="6"></div>
+                <button type="submit" class="btn-primary auth-btn">Create Account</button>
+                <p class="auth-msg" id="signupMsg"></p>
+            </form>
+            <div class="auth-footer"><a href="index.html">← Back to Store</a></div>
+        </div>
+    </div>
+    <script>
+        function showForm(type){
+            document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(type==='login'?0:1)));
+            document.getElementById('loginForm').classList.toggle('active',type==='login');
+            document.getElementById('signupForm').classList.toggle('active',type==='signup');
+        }
+        function handleLogin(e){
+            e.preventDefault();
+            const users=JSON.parse(localStorage.getItem('ra_users')||'[]');
+            const email=document.getElementById('loginEmail').value;
+            const pass=document.getElementById('loginPass').value;
+            const user=users.find(u=>u.email===email&&u.password===pass);
+            if(user){localStorage.setItem('ra_user',JSON.stringify(user));window.location.href='index.html';}
+            else{document.getElementById('loginMsg').textContent='Invalid email or password';document.getElementById('loginMsg').className='auth-msg error';}
+        }
+        function handleSignup(e){
+            e.preventDefault();
+            const users=JSON.parse(localStorage.getItem('ra_users')||'[]');
+            const name=document.getElementById('signupName').value;
+            const email=document.getElementById('signupEmail').value;
+            const pass=document.getElementById('signupPass').value;
+            if(users.find(u=>u.email===email)){document.getElementById('signupMsg').textContent='Email already exists';document.getElementById('signupMsg').className='auth-msg error';return;}
+            const user={name,email,password:pass,role:'customer'};
+            users.push(user);localStorage.setItem('ra_users',JSON.stringify(users));localStorage.setItem('ra_user',JSON.stringify(user));
+            document.getElementById('signupMsg').textContent='Account created! Redirecting...';document.getElementById('signupMsg').className='auth-msg success';
+            setTimeout(()=>window.location.href='index.html',1500);
+        }
+    </script>
+</body>
+</html>

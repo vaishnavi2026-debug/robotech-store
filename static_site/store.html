@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Store – The Robot Alchemist</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="store.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="site-header">
+        <a href="index.html" class="logo"><div class="logo-icon">⚡</div>The Robot <span>Alchemist</span></a>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="store.html" class="active">Store</a>
+            <a href="compare.html">Compare</a>
+        </nav>
+        <div class="header-actions">
+            <button class="h-btn search-toggle" id="searchToggle">Search</button>
+            <a href="contact.html" class="h-btn">Get Quote</a>
+            <button class="h-btn h-btn-primary cart-toggle" id="cartToggle">Cart <span class="cart-count" id="cartCount">0</span></button>
+            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <!-- SEARCH OVERLAY -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-modal">
+            <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
+            <button class="search-close" id="searchClose">ESC</button>
+            <div class="search-results" id="searchResults"><p class="search-hint">Start typing...</p></div>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header"><h3>Your Cart</h3><button class="cart-close" id="cartClose">×</button></div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-total"><span>Total:</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-primary cart-checkout-btn" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- PAGE HEAD -->
+    <div class="page-head">
+        <div class="container page-head-inner">
+            <div>
+                <div class="breadcrumb"><a href="index.html">Home</a> › <strong>Store</strong></div>
+                <h1>Our Store</h1>
+                <p>Premium drones, IoT modules, and DIY electronics kits</p>
+            </div>
+            <div class="sort-bar">
+                <span>Sort:</span>
+                <select id="sortSelect"><option value="popular">Popular</option><option value="price-low">Price: Low→High</option><option value="price-high">Price: High→Low</option><option value="rating">Top Rated</option></select>
+            </div>
+        </div>
+    </div>
+
+    <!-- STORE LAYOUT -->
+    <div class="store-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="s-title">Categories</div>
+                <ul class="cat-list" id="catList">
+                    <li class="cat-item active" data-cat="all" onclick="filterCat('all',this)"><span>🏪 All Products</span><span class="cat-count">16</span></li>
+                    <li class="cat-item" data-cat="drones" onclick="filterCat('drones',this)"><span>🚁 Drones & FPV</span><span class="cat-count">7</span></li>
+                    <li class="cat-item" data-cat="iot" onclick="filterCat('iot',this)"><span>📡 IoT Projects</span><span class="cat-count">5</span></li>
+                    <li class="cat-item" data-cat="diy" onclick="filterCat('diy',this)"><span>🔧 DIY Kits</span><span class="cat-count">2</span></li>
+                    <li class="cat-item" data-cat="parts" onclick="filterCat('parts',this)"><span>🔩 Parts</span><span class="cat-count">2</span></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <div class="s-title">Price Range</div>
+                <div class="price-range">
+                    <input type="range" class="price-slider" id="priceSlider" min="0" max="5000" value="5000" oninput="document.getElementById('priceLabel').textContent='₹'+this.value">
+                    <div class="price-labels"><span>₹0</span><span id="priceLabel">₹5000</span></div>
+                    <button class="apply-btn" onclick="applyFilters()">Apply</button>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <div class="s-title">Tags</div>
+                <div class="tag-list">
+                    <span class="tag" onclick="toggleTag(this)">FPV</span>
+                    <span class="tag" onclick="toggleTag(this)">ESP32</span>
+                    <span class="tag" onclick="toggleTag(this)">Arduino</span>
+                    <span class="tag" onclick="toggleTag(this)">Brushless</span>
+                    <span class="tag" onclick="toggleTag(this)">Sensor</span>
+                    <span class="tag" onclick="toggleTag(this)">Robot</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- PRODUCTS -->
+        <div class="products-area">
+            <div class="products-header">
+                <span class="products-count">Showing <strong id="productCount">16</strong> products</span>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </div>
+
+    <!-- CHAT WIDGET -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header"><span>⚡ Support</span><button onclick="toggleChat()">−</button></div>
+            <div class="chat-messages" id="chatMessages"><div class="chat-msg bot"><span>Hi! Need help finding something?</span></div></div>
+            <div class="chat-input-wrap"><input type="text" id="chatInput" placeholder="Type..." autocomplete="off"><button id="chatSend">→</button></div>
+        </div>
+        <button class="chat-fab" id="chatFab" onclick="toggleChat()">💬</button>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="app.js"></script>
+    <script src="store-app.js"></script>
+</body>
+</html>
